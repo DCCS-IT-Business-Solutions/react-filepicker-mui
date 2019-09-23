@@ -1,0 +1,96 @@
+{
+  "name": "@dccs/react-filepicker-mui",
+  "version": "0.0.1",
+  "description": "React-Autocomplete without the tears",
+  "main": "lib/index.js",
+  "scripts": {
+    "watch": "tsc --watch",
+    "build": "npm-run-all -s lint transpile build-storybook",
+    "transpile": "tsc",
+    "lint": "tslint ./src/**/*.ts*",
+    "test": "jest --runInBand --coverage --passWithNoTests",
+    "watch-test": "jest --watch --runInBand --coverage --passWithNoTests",
+    "storybook": "start-storybook -p 6006 -c .storybook",
+    "build-storybook": "build-storybook -o docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DCCS-IT-Business-Solutions/react-filepicker-mui.git"
+  },
+  "keywords": [
+    "npm",
+    "node",
+    "react",
+    "javascript",
+    "typescript",
+    "filepicker",
+    "fileupload",
+    "filelist",
+    "file",
+    "react-filepicker",
+    "react-filelist",
+    "react-fileupload",
+    "mui",
+    "material-ui"
+  ],
+  "author": "Andreas Resch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DCCS-IT-Business-Solutions/react-filepicker-mui/issues"
+  },
+  "homepage": "https://github.com/DCCS-IT-Business-Solutions/react-filepicker-mui#readme",
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "@material-ui/core": "^4.3.1",
+    "@material-ui/icons": "^4.2.1",
+    "react-dropzone": "^10.1.9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@material-ui/core": "4.3.1",
+    "@material-ui/icons": "4.2.1",
+    "@storybook/addon-actions": "^5.2.1",
+    "@storybook/addon-links": "^5.2.1",
+    "@storybook/addons": "^5.2.1",
+    "@storybook/react": "^5.2.1",
+    "@types/enzyme": "^3.10.3",
+    "@types/jest": "^24.0.17",
+    "@types/react": "16.8.25",
+    "@types/react-dom": "16.8.5",
+    "@types/storybook__react": "^4.0.2",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.6",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "jest": "^24.8.0",
+    "npm-run-all": "^4.1.5",
+    "react": "^16.8.6",
+    "react-docgen-typescript-loader": "^3.2.1",
+    "react-docgen-typescript-webpack-plugin": "^1.1.0",
+    "react-dom": "^16.8.6",
+    "react-dropzone": "^10.1.9",
+    "tslint": "^5.20.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.1.0",
+    "typescript": "^3.6.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "<rootDir>/preprocessor.js"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.ts?(x)",
+      "c**/?(*.)(spec|test).ts?(x)"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.js"
+    ]
+  }
+}
