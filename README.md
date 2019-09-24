@@ -19,9 +19,9 @@ This command will download and install react-filepicker-mui
 | Name       | Type                                    | Description                                                                                                       |
 | ---------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | value      | `string[]`                              | Array of Ids from selected files                                                                                  |
-| onChange   | `(newValue: string[]) => voId`          | gets called every time a file is: <li>added and the uploadFile function has returned the Id</li> <li>removed</li> |
+| onChange   | `(newValue: string[]) => void`          | gets called every time a file is: <li>added and the uploadFile function has returned the Id</li> <li>removed</li> |
 | uploadFile | `(file: File) => Promise<string>`       | do something with the file and return an Id for it                                                                |
-| getFile    | `(Id: string) => Promise<FileMetadata>` | gets called for every Id in the `value[]` and should return the metadata for the file with the given Id           |
+| getFile    | `(id: string) => Promise<FileMetadata>` | gets called for every Id in the `value[]` and should return the metadata for the file with the given Id           |
 
 ### No Customization
 
@@ -70,13 +70,13 @@ This command will download and install react-filepicker-mui
     >
       <input {...state.getInputProps()} />
       {files.map(f => (
-        <ListItem key={f.Id}>
+        <ListItem key={f.id}>
           <ListItemText primary={f.name} />
           <ListItemSecondaryAction>
             <Button
               onClick={e => {
                 e.stopPropagation();
-                removeFile(f.Id);
+                removeFile(f.id);
               }}
             >
               <Typography>Delete</Typography>
