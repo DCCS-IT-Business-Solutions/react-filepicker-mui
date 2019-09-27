@@ -41,40 +41,59 @@ export function FilePicker(props: FilePickerProps) {
 
   const [files, setFiles] = React.useState<IFileMetadata[]>([]);
 
-  function handleFilePicker(newFile: IFileMetadata, file: File) {
-    props.uploadFile(file).then(
-      (id: string) => {
-        newFile.id = id;
-        props.onChange([...props.value, id]);
-      },
-      (error: any) => {
-        if (props.onUploadFileError) {
-          props.onUploadFileError(error);
-        }
-      }
+  React.useEffect(() => {
+    const newFiles = files.filter(
+      f => f.isLocal && f.localFile && f.isDownloading !== true
     );
+    if (newFiles !== undefined && newFiles.length > 0) {
+      handleFilePicker(newFiles);
+    }
+  }, [files]);
+
+  async function handleFilePicker(newFiles: IFileMetadata[]) {
+    const newIds: string[] = [];
+    for (const f of newFiles) {
+      f.isDownloading = true;
+    }
+    for (const newFile of newFiles) {
+      const id = await props
+        .uploadFile(newFile.localFile)
+        .catch((error: any) => {
+          newFile.isDownloading = undefined;
+          window.console.log("fileupload error:", error);
+          if (props.onUploadFileError) {
+            props.onUploadFileError(error);
+          }
+        });
+      if (id) {
+        newFile.id = id;
+        newFile.localFile = undefined;
+        newFile.isDownloading = undefined;
+        newIds.push(id);
+      }
+    }
+    props.onChange([...props.value, ...newIds]);
   }
 
   function handleRemoveFile(fileId: string) {
+    window.console.log("removing file:", fileId);
     props.onChange(props.value.filter((entry: string) => entry !== fileId));
   }
 
-  function onDrop(acceptedFiles: File[]) {
-    for (
-      let i = 0;
-      i < (props.multiple === true ? acceptedFiles.length : 1);
-      i++
-    ) {
+  async function onDrop(acceptedFiles: File[]) {
+    const newFiles: IFileMetadata[] = [];
+    for (let i = 0; i < acceptedFiles.length; i++) {
       const file = acceptedFiles[i];
-      const localId = files.length.toString();
+      const localId = (files.length + i).toString();
       const newFile: IFileMetadata = {
         isLocal: true,
         id: localId,
-        name: file.name
+        name: file.name,
+        localFile: file
       };
-      setFiles([...files, newFile]);
-      handleFilePicker(newFile, file);
+      newFiles.push(newFile);
     }
+    setFiles([...files, ...newFiles]);
   }
 
   function updateFilesAfterDownload(serverFile: IFileMetadata) {
@@ -101,6 +120,12 @@ export function FilePicker(props: FilePickerProps) {
           updateFilesAfterDownload(response);
         },
         (error: any) => {
+          window.console.log(
+            "error downloading file",
+            serverId,
+            "error: ",
+            error
+          );
           if (props.onGetFileError) {
             props.onGetFileError(serverId, error);
           }

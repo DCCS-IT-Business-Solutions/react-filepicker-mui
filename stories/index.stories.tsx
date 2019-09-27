@@ -2,10 +2,6 @@ import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
 import { FilePicker, FileMetadata } from "../src/FilePicker";
-import { string } from "prop-types";
-import { file } from "@babel/types";
-import { DropzoneState } from "react-dropzone";
-import { IFileMetadata } from "../src/FileListItem";
 import {
   ListItem,
   ListItemText,
@@ -14,23 +10,41 @@ import {
   Typography,
   List
 } from "@material-ui/core";
+import { reject, resolve } from "q";
+import { sleep } from "@dccs/utils";
+
+const server: FileMetadata[] = [];
+function setServer(data: FileMetadata) {
+  server.push(data);
+}
 
 function BasicFilePicker() {
-  // simulating the server
-  const [server, setServer] = React.useState<FileMetadata[]>([]);
+  React.useEffect(() => {
+    return;
+  }, [server.length]);
 
-  // fileIds
   const [fileIds, setFileIds] = React.useState<string[]>([]);
 
-  function uploadFile(newFile: File) {
-    return new Promise<string>((res, rej) => {
-      const newId = server.length.toString();
-      setServer([
-        ...server,
-        { id: newId, name: newFile.name, size: newFile.size.toString() }
-      ]);
-      setTimeout(() => res(newId), 500);
+  async function uploadFile(newFile: File) {
+    await sleep(500);
+    const newId = (Math.random() * 1000000000).toString();
+    setServer({
+      id: newId,
+      name: newFile.name,
+      size: newFile.size.toString()
     });
+    return resolve<string>(newId);
+  }
+
+  async function getFile(id: string) {
+    await sleep(500);
+    window.console.log("searching file", id, "server files", server);
+    const file = server.find(e => e.id === id);
+    if (file) {
+      return resolve<FileMetadata>(file);
+    } else {
+      return reject<any>("file not found!");
+    }
   }
 
   return (
@@ -38,49 +52,41 @@ function BasicFilePicker() {
       multiple={true}
       value={fileIds}
       onChange={selectedIds => {
-        setFileIds(selectedIds);
+        setFileIds([...selectedIds]);
       }}
       uploadFile={uploadFile}
-      getFile={(id: string) => {
-        return new Promise((res, rej) => {
-          setTimeout(() => res(server.find(e => e.id === id)), 500);
-        });
-      }}
-      // children={(
-      //   state: DropzoneState,
-      //   files: IFileMetadata[],
-      //   removeFile: (id: string) => void
-      // ) => (
-      //   <div
-      //     {...state.getRootProps()}
-      //     style={{ minWidth: 500, minHeight: 500, backgroundColor: "gray" }}
-      //   >
-      //     <input {...state.getInputProps()} />
-      //     {files.map(f => (
-      //       <ListItem key={f.id}>{f.name}</ListItem>
-      //     ))}
-      //   </div>
-      // )}
+      getFile={getFile}
     />
   );
 }
 
 function CustomRenderExample() {
-  // simulating the server
-  const [server, setServer] = React.useState<FileMetadata[]>([]);
+  React.useEffect(() => {
+    return;
+  }, [server.length]);
 
-  // fileIds
   const [fileIds, setFileIds] = React.useState<string[]>([]);
 
-  function uploadFile(newFile: File) {
-    return new Promise<string>((res, rej) => {
-      const newId = server.length.toString();
-      setServer([
-        ...server,
-        { id: newId, name: newFile.name, size: newFile.size.toString() }
-      ]);
-      setTimeout(() => res(newId), 500);
+  async function uploadFile(newFile: File) {
+    await sleep(500);
+    const newId = (Math.random() * 1000000000).toString();
+    setServer({
+      id: newId,
+      name: newFile.name,
+      size: newFile.size.toString()
     });
+    return resolve<string>(newId);
+  }
+
+  async function getFile(id: string) {
+    await sleep(500);
+    window.console.log("searching file", id, "server files", server);
+    const file = server.find(e => e.id === id);
+    if (file) {
+      return resolve<FileMetadata>(file);
+    } else {
+      return reject<any>("file not found!");
+    }
   }
 
   return (
@@ -91,11 +97,7 @@ function CustomRenderExample() {
         setFileIds(selectedIds);
       }}
       uploadFile={uploadFile}
-      getFile={(id: string) => {
-        return new Promise((res, rej) => {
-          setTimeout(() => res(server.find(e => e.id === id)), 500);
-        });
-      }}
+      getFile={getFile}
     >
       {(state, files, removeFile) => (
         <div
