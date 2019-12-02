@@ -1,7 +1,7 @@
 /// <reference types="react" />
-import { FilePickerProps } from "./types";
-export declare function FilePicker(props: FilePickerProps): JSX.Element;
-export declare namespace FilePicker {
+import { IFilePickerProps } from "./types";
+export declare function DefaultFilePicker(props: IFilePickerProps): JSX.Element;
+export declare namespace DefaultFilePicker {
     var displayName: string;
     var __docgenInfo: {
         "description": string;

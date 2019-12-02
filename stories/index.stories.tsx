@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
-import { FilePicker, FileMetadata } from "../src/FilePicker";
+import { FilePicker } from "../src/FilePicker";
 import {
   ListItem,
   ListItemText,
@@ -12,13 +12,14 @@ import {
 } from "@material-ui/core";
 import { reject, resolve } from "q";
 import { sleep } from "@dccs/utils";
+import { FileMetadata, IFileMetadata } from "../src/types";
 
 const server: FileMetadata[] = [];
 function setServer(data: FileMetadata) {
   server.push(data);
 }
 
-function BasicFilePicker() {
+function BasicAsyncFilePicker() {
   React.useEffect(() => {
     return;
   }, [server.length]);
@@ -38,7 +39,6 @@ function BasicFilePicker() {
 
   async function getFile(id: string) {
     await sleep(500);
-    window.console.log("searching file", id, "server files", server);
     const file = server.find(e => e.id === id);
     if (file) {
       return resolve<FileMetadata>(file);
@@ -49,6 +49,7 @@ function BasicFilePicker() {
 
   return (
     <FilePicker
+      variant="async"
       multiple={true}
       value={fileIds}
       onChange={selectedIds => {
@@ -60,7 +61,7 @@ function BasicFilePicker() {
   );
 }
 
-function CustomRenderExample() {
+function CustomRenderAsyncExample() {
   React.useEffect(() => {
     return;
   }, [server.length]);
@@ -80,7 +81,6 @@ function CustomRenderExample() {
 
   async function getFile(id: string) {
     await sleep(500);
-    window.console.log("searching file", id, "server files", server);
     const file = server.find(e => e.id === id);
     if (file) {
       return resolve<FileMetadata>(file);
@@ -91,6 +91,7 @@ function CustomRenderExample() {
 
   return (
     <FilePicker
+      variant="async"
       multiple={true}
       value={fileIds}
       onChange={selectedIds => {
@@ -128,10 +129,70 @@ function CustomRenderExample() {
   );
 }
 
+function BasicFilePicker() {
+  const [myFiles, setMyFiles] = React.useState<IFileMetadata[]>([]);
+
+  return (
+    <FilePicker
+      multiple={true}
+      value={myFiles}
+      onChange={(newFiles: IFileMetadata[]) => setMyFiles(newFiles)}
+    />
+  );
+}
+
+function CustomRenderExample() {
+  const [myFiles, setMyFiles] = React.useState<IFileMetadata[]>([]);
+
+  return (
+    <FilePicker
+      multiple={true}
+      value={myFiles}
+      onChange={(newFiles: IFileMetadata[]) => {
+        setMyFiles(newFiles);
+      }}
+    >
+      {(state, files, removeFile) => (
+        <div
+          {...state.getRootProps()}
+          style={{ width: 500, minHeight: 500, backgroundColor: "lightgray" }}
+        >
+          <input {...state.getInputProps()} />
+          <List>
+            {files.map(f => (
+              <ListItem key={f.id}>
+                <ListItemText primary={f.name} />
+                <ListItemSecondaryAction>
+                  <Button
+                    onClick={e => {
+                      e.stopPropagation();
+                      removeFile(f.id);
+                    }}
+                  >
+                    <Typography>Delete</Typography>
+                  </Button>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      )}
+    </FilePicker>
+  );
+}
+
 storiesOf("FilePicker", module).add("Uncustomized example", () => (
   <BasicFilePicker />
 ));
 
 storiesOf("FilePicker", module).add("Custom render example", () => (
   <CustomRenderExample />
+));
+
+storiesOf("AsyncFilePicker", module).add("Uncustomized async example", () => (
+  <BasicAsyncFilePicker />
+));
+
+storiesOf("AsyncFilePicker", module).add("Custom render async example", () => (
+  <CustomRenderAsyncExample />
 ));

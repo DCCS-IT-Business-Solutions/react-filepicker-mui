@@ -1,7 +1,7 @@
 /// <reference types="react" />
 import { IFileListItemProps } from "./types";
-export declare function FileListItem(props: IFileListItemProps): JSX.Element;
-export declare namespace FileListItem {
+export declare function AsyncFileListItem(props: IFileListItemProps): JSX.Element;
+export declare namespace AsyncFileListItem {
     var displayName: string;
     var __docgenInfo: {
         "description": string;

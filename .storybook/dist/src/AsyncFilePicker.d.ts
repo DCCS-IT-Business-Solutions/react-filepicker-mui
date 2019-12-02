@@ -1,7 +1,7 @@
 /// <reference types="react" />
-import { FilePickerProps } from "./types";
-export declare function FilePicker(props: FilePickerProps): JSX.Element;
-export declare namespace FilePicker {
+import { IAsyncFilePickerProps } from "./types";
+export declare function AsyncFilePicker(props: IAsyncFilePickerProps): JSX.Element;
+export declare namespace AsyncFilePicker {
     var displayName: string;
     var __docgenInfo: {
         "description": string;
@@ -26,6 +26,51 @@ export declare namespace FilePicker {
                 };
             };
             "onChange": {
+                "defaultValue": null;
+                "description": string;
+                "name": string;
+                "required": boolean;
+                "type": {
+                    "name": string;
+                };
+            };
+            "getFile": {
+                "defaultValue": null;
+                "description": string;
+                "name": string;
+                "required": boolean;
+                "type": {
+                    "name": string;
+                };
+            };
+            "uploadFile": {
+                "defaultValue": null;
+                "description": string;
+                "name": string;
+                "required": boolean;
+                "type": {
+                    "name": string;
+                };
+            };
+            "isLoading": {
+                "defaultValue": null;
+                "description": string;
+                "name": string;
+                "required": boolean;
+                "type": {
+                    "name": string;
+                };
+            };
+            "onUploadFileError": {
+                "defaultValue": null;
+                "description": string;
+                "name": string;
+                "required": boolean;
+                "type": {
+                    "name": string;
+                };
+            };
+            "onGetFileError": {
                 "defaultValue": null;
                 "description": string;
                 "name": string;
