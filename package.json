@@ -39,13 +39,14 @@
     "url": "https://github.com/DCCS-IT-Business-Solutions/react-filepicker-mui/issues"
   },
   "homepage": "https://github.com/DCCS-IT-Business-Solutions/react-filepicker-mui#readme",
-  "dependencies": {},
+  "dependencies": {
+    "react-dropzone": "^10.1.9"
+  },
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "@material-ui/core": "^4.3.1",
-    "@material-ui/icons": "^4.2.1",
-    "react-dropzone": "^10.1.9"
+    "@material-ui/icons": "^4.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
