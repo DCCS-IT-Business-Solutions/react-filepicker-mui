@@ -13,6 +13,7 @@ interface IFilePickerProps {
   onChange: (newValue: string[]) => void;
   getFile: (id: string) => Promise<FileMetadata>;
   uploadFile: (file: File) => Promise<string>;
+  deleteFile?: (id: string) => void;
   isLoading?: (isLoading: boolean) => void;
   onUploadFileError?: (e: any) => void;
   onGetFileError?: (id: string, e: any) => void;
@@ -55,7 +56,10 @@ export function FilePicker(props: FilePickerProps) {
     );
   }
 
-  function handleRemoveFile(fileId: string) {
+  async function handleRemoveFile(fileId: string) {
+    if (props.deleteFile) {
+      props.deleteFile(fileId);
+    }
     props.onChange(props.value.filter((entry: string) => entry !== fileId));
   }
 
