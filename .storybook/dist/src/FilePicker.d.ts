@@ -8,6 +8,7 @@ interface IFilePickerProps {
     onChange: (newValue: string[]) => void;
     getFile: (id: string) => Promise<FileMetadata>;
     uploadFile: (file: File) => Promise<string>;
+    deleteFile?: (id: string) => void;
     isLoading?: (isLoading: boolean) => void;
     onUploadFileError?: (e: any) => void;
     onGetFileError?: (id: string, e: any) => void;
@@ -56,6 +57,15 @@ export declare namespace FilePicker {
                 };
             };
             "uploadFile": {
+                "defaultValue": null;
+                "description": string;
+                "name": string;
+                "required": boolean;
+                "type": {
+                    "name": string;
+                };
+            };
+            "deleteFile": {
                 "defaultValue": null;
                 "description": string;
                 "name": string;
